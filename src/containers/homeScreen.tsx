@@ -6,23 +6,34 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, View, Dimensions, Text, Alert, ScrollView, PermissionsAndroid, ActivityIndicator, TouchableOpacity, TextInput } from 'react-native';
+import {
+    SafeAreaView,
+    View,
+    Text,
+    Alert,
+    ScrollView,
+    PermissionsAndroid,
+    ActivityIndicator,
+    TouchableOpacity,
+    TextInput,
+} from 'react-native';
 import { Config } from '../api/config';
 import axios from 'axios';
 import Geolocation from '@react-native-community/geolocation';
-import moment from 'moment';
-
-const { height, width } = Dimensions.get('window');
+import styles from './styles';
+import Header from '../components/Header';
+import AqiView from '../components/AqiView';
+import ForecastView from '../components/ForecastView';
+import STRINGS from '../constants/strings';
+import { DAYS_ARRAY } from '../constants/constants';
 
 const HomeScreen = () => {
     const [response, setResponse] = useState<any>({});
-    const [yesterdayData, setYesterdayData] = useState<any>([]);
-    const [todayData, setTodayData] = useState<any>([]);
-    const [tomorrowData, setTomorrowData] = useState<any>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [accessDenied, setAccessDenied] = useState<boolean>(false);
     const [value, setValue] = useState<string>('');
     const [searchResponse, setSearchResponse] = useState<any>();
+    const [forecastData, setForecastData] = useState<any>();
 
 
     useEffect(() => {
@@ -39,9 +50,8 @@ const HomeScreen = () => {
                                 fetchAQIData(info);
                             })
                         } else {
-                            setLoading(false);
                             setAccessDenied(true);
-                            Alert.alert('Alert!', 'You have set to never ask again. Please enable it in settings')
+                            setLoading(false);
                         }
                     })
                 } else {
@@ -60,140 +70,103 @@ const HomeScreen = () => {
     const fetchAQIData = async (position: any) => {
         setLoading(true);
         setAccessDenied(false);
-        let url = `https://api.waqi.info/feed/geo:${position?.coords?.latitude};${position?.coords?.longitude}/?token=${Config.AQI_API_KEY}`;
+        let url = `${Config.BASE_URL}feed/geo:${position?.coords?.latitude};${position?.coords?.longitude}/?token=${Config.AQI_API_KEY}`;
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url); //sample json data added in src/containers/sampleData/aqiData.json
             if (response?.data?.status === 'ok') {
                 setResponse(response.data);
-                getYesterdayData(response.data);
-                getTodayData(response.data);
-                getTomorrowData(response.data);
-
+                getForecastData(response.data);
             } else {
-                Alert.alert('Error', 'Error occured white fetching data')
+                Alert.alert(STRINGS.error, STRINGS.errorMessage);
             }
         } catch (error) {
-            Alert.alert('Error', 'Error occured white fetching data')
+            Alert.alert(STRINGS.error, STRINGS.errorMessage);
         } finally {
             setLoading(false);
         }
     }
 
-    const getYesterdayData = (response: any) => {
+    const getForecastData = (response: any) => {
         let dataArray: any = [];
-        Object.entries(response?.data?.forecast?.daily).map(([key, value]: any, index) => {
-            let objValue: number = value?.findIndex((item: any, index: any) => item?.day === moment().subtract(1, 'day').format('YYYY-MM-DD'));
-            let eachObj: any = {};
-            eachObj['name'] = key;
-            eachObj['value'] = value[objValue]
-            dataArray.push(eachObj);
-        })
-        setYesterdayData(dataArray);
-    }
-    const getTodayData = (response: any) => {
-        let dataArray: any = [];
-        Object.entries(response?.data?.forecast?.daily).map(([key, value]: any, index) => {
-            let objValue = value?.findIndex((item: any, index: any) => item?.day === moment().format('YYYY-MM-DD'));
-            let eachObj: any = {};
-            eachObj['name'] = key;
-            eachObj['value'] = value[objValue]
-            dataArray.push(eachObj);
-        })
-        setTodayData(dataArray);
-    }
-    const getTomorrowData = (response: any) => {
-        let dataArray: any = [];
-        Object.entries(response?.data?.forecast?.daily).map(([key, value]: any, index) => {
-            let objValue = value?.findIndex((item: any, index: any) => item?.day === moment().add(1, 'day').format('YYYY-MM-DD'));
-            let eachObj: any = {};
-            eachObj['name'] = key;
-            eachObj['value'] = value[objValue]
-            dataArray.push(eachObj);
-        })
-        setTomorrowData(dataArray);
+        DAYS_ARRAY.map((day, index) => {
+            Object.entries(response?.data?.forecast?.daily).map(([key, value]: any, objIndex) => {
+                let objValue: number = value?.findIndex((item: any, innderIndex: any) => item?.day === day);
+                let eachObj: any = {};
+                eachObj['name'] = key;
+                eachObj['day'] = day;
+                eachObj['value'] = value[objValue]
+                dataArray.push(eachObj);
+            })
+        });
+        setForecastData(dataArray); //sample json data added in src/containers/sampleData/forecastData.json
     }
 
     const getSearchCityAQI = async () => {
+        if (value === '') {
+            Alert.alert(STRINGS.alert, STRINGS.enterCityName);
+            return;
+        }
         setLoading(true);
-        let url = `https://api.waqi.info/search/?token=${Config.AQI_API_KEY}&keyword=${value}`;
+        let url = `${Config.BASE_URL}search/?token=${Config.AQI_API_KEY}&keyword=${value}`;
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(url); //sample json data added in src/containers/sampleData/searchApiData.json
             if (response?.data?.status === 'ok') {
-                setSearchResponse(response?.data)
+                setSearchResponse(response?.data);
 
             } else {
-                Alert.alert('Alert!', 'Error occured white fetching data')
+                Alert.alert(STRINGS.alert, STRINGS.errorMessage);
             }
         } catch (error) {
-            Alert.alert('Alert!', 'Error occured white fetching data')
+            Alert.alert(STRINGS.alert, STRINGS.errorMessage);
         } finally {
             setLoading(false);
         }
     }
 
-    const renderData = (dataArray: any[]) => (
-        dataArray.map((item, index) =>
-            <View key={String(index)} style={{ flexDirection: 'row', justifyContent: 'space-evenly' }}>
-                <Text style={{ flex: 1, color: '#000', fontSize: 14 }}>{item?.name}</Text>
-                <Text style={{ flex: 1, color: '#000', fontSize: 14 }}>avg:{item?.value?.avg}</Text>
-                <Text style={{ flex: 1, color: '#000', fontSize: 14 }}>min:{item?.value?.min}</Text>
-                <Text style={{ flex: 1, color: '#000', fontSize: 14 }}>max:{item?.value?.max}</Text>
-            </View>
-        )
-    )
+    const showAlert = () => {
+        Alert.alert(STRINGS.alert, STRINGS.enableMessage);
+        return;
+    }
 
     const renderContent = () => {
         return (
-            <ScrollView>
-                <View style={{ height: height * 0.1, backgroundColor: '#053772', justifyContent: 'center', alignItems: 'center' }}>
-                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 20 }}>Air Quality Index</Text>
-                </View>
-                <View style={{ flexDirection: 'row', height: height * 0.12, margin: 10 }}>
-                    <View style={{ flex: 2, borderRadius: 10, backgroundColor: '#178971', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ color: '#fff', fontSize: 20 }}>{response?.data?.aqi}</Text>
-                    </View>
-                    <View style={{ flex: 8, paddingHorizontal: 10, justifyContent: 'center' }}>
-                        <Text style={{ color: '#000' }}>city: {response?.data?.city?.name}</Text>
-                        <Text style={{ color: '#000' }}>Lat: {response?.data?.city?.geo[0]}</Text>
-                        <Text style={{ color: '#000' }}>Long: {response?.data?.city?.geo[1]}</Text>
-                    </View>
-                </View>
-                <View style={{ marginHorizontal: 10, marginTop: 10 }}>
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: 'bold' }}>Yesterday Forecast:</Text>
-                    {renderData(yesterdayData)}
-                </View>
-                <View style={{ marginHorizontal: 10, marginTop: 10 }}>
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: 'bold' }}>Today Forecast:</Text>
-                    {renderData(todayData)}
-                </View>
-                <View style={{ marginHorizontal: 10, marginTop: 10 }}>
-                    <Text style={{ color: '#000', fontSize: 14, fontWeight: 'bold' }}>Tomorrow Forecast:</Text>
-                    {renderData(tomorrowData)}
-                </View>
-                <Text style={{ color: '#000', marginTop: 10, marginLeft: 10, fontSize: 14, fontWeight: 'bold' }}>Search your preferred location below:</Text>
-                <View style={{ flexDirection: 'row', marginTop: 10, height: height * 0.06, width: width * 0.8, borderWidth: 1, borderRadius: 5, alignSelf: 'center' }}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Header
+                    screen={STRINGS.home}
+                />
+                <AqiView
+                    aqi={response?.data?.aqi}
+                    city={response?.data?.city?.name}
+                    lat={response?.data?.city?.geo[0]}
+                    long={response?.data?.city?.geo[1]}
+                    updatedTime={response?.data?.time?.iso}
+                />
+                <Text style={styles.aqfHeader}>{STRINGS.airQualityForecast}</Text>
+                <ForecastView
+                    dayWiseData={forecastData}
+                />
+                <Text style={styles.searchHeader}>{STRINGS.searchHeader}</Text>
+                <View style={styles.inputContainer}>
                     <TextInput
                         value={value}
-                        placeholder='Enter city name'
+                        placeholder={STRINGS.enterCity}
                         keyboardType='default'
-                        style={{ justifyContent: 'center', fontSize: 14, flex: 8, borderRightWidth: 1 }}
+                        style={styles.textInput}
                         onChangeText={(text) => setValue(text)}
                     />
-                    <TouchableOpacity onPress={() => getSearchCityAQI()} style={{ flex: 2, justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ color: '#A8A5A5' }}>search</Text>
+                    <TouchableOpacity onPress={() => getSearchCityAQI()}
+                        style={styles.searchContainer}>
+                        <Text style={styles.searchText}>{STRINGS.search}</Text>
                     </TouchableOpacity>
                 </View>
                 {searchResponse?.data?.length > 0 &&
-                    <View style={{ flexDirection: 'row', height: height * 0.12, margin: 10 }}>
-                        <View style={{ flex: 2, borderRadius: 10, backgroundColor: '#178971', justifyContent: 'center', alignItems: 'center' }}>
-                            <Text style={{ color: '#fff', fontSize: 20 }}>{searchResponse?.data[0]?.aqi}</Text>
-                        </View>
-                        <View style={{ flex: 8, paddingHorizontal: 10, justifyContent: 'center' }}>
-                            <Text style={{ color: '#000' }}>city: {searchResponse?.data[0]?.station?.name}</Text>
-                            <Text style={{ color: '#000' }}>Lat: {searchResponse?.data[0]?.station?.geo[0]}</Text>
-                            <Text style={{ color: '#000' }}>Long: {searchResponse?.data[0]?.station?.geo[1]}</Text>
-                        </View>
-                    </View>
+                    <AqiView
+                        aqi={searchResponse?.data[0]?.aqi}
+                        city={searchResponse?.data[0]?.station?.name}
+                        lat={searchResponse?.data[0]?.station?.geo[0]}
+                        long={searchResponse?.data[0]?.station?.geo[1]}
+                        updatedTime={searchResponse?.data?.time?.stime}
+                    />
                 }
 
             </ScrollView>
@@ -202,20 +175,20 @@ const HomeScreen = () => {
 
     const renderErrorPage = () => {
         return (
-            <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-                <TouchableOpacity onPress={() => requestPermission()}
-                    style={{ height: height * 0.08, width: width * 0.8, backgroundColor: '#053772', justifyContent: 'center', alignItems: 'center', borderRadius: 10 }}>
-                    <Text style={{ color: '#fff', fontSize: 16, fontWeight: 'bold' }}>Get access</Text>
+            <View style={styles.errorPage}>
+                <TouchableOpacity onPress={() => showAlert()}
+                    style={styles.accessButton}>
+                    <Text style={styles.accessButtonText}>{STRINGS.getAccess}</Text>
                 </TouchableOpacity>
             </View>
         )
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#fff' }}>
+        <SafeAreaView style={styles.containerStyles}>
             {loading ?
                 <ActivityIndicator
-                    style={{ position: 'absolute', top: 0, bottom: 0, left: 0, right: 0 }}
+                    style={styles.loader}
                     color={'#053772'} size={'large'} />
                 :
                 accessDenied ?
