@@ -1,0 +1,163 @@
+{
+    "status": "ok",
+    "data": [
+        {
+            "uid": 7022,
+            "aqi": "124",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 19:00:00",
+                "vtime": 1713274200
+            },
+            "station": {
+                "name": "Hyderabad US Consulate, India (हैदराबाद अमेरिकी वाणिज्य दूतावास)",
+                "geo": [
+                    17.384050369263,
+                    78.456359863281
+                ],
+                "url": "india/hyderabad/us-consulate",
+                "country": "IN"
+            }
+        },
+        {
+            "uid": 8182,
+            "aqi": "113",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "Sanathnagar, Hyderabad, India",
+                "geo": [
+                    17.4559458,
+                    78.4332152
+                ],
+                "url": "india/hyderabad/sanathnagar",
+                "country": "IN"
+            }
+        },
+        {
+            "uid": 8677,
+            "aqi": "105",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "Zoo Park, Bahadurpura West, Hyderabad, India",
+                "geo": [
+                    17.349694,
+                    78.451437
+                ],
+                "url": "india/hyderabad/zoo-park--bahadurpura-west",
+                "country": "IN"
+            }
+        },
+        {
+            "uid": 14135,
+            "aqi": "87",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "New Malakpet, Hyderabad, India",
+                "geo": [
+                    17.37206,
+                    78.50864
+                ],
+                "url": "india/hyderabad/new-malakpet",
+                "country": "IN"
+            }
+        },
+        {
+            "uid": 14125,
+            "aqi": "85",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "Somajiguda, Hyderabad, India",
+                "geo": [
+                    17.417094,
+                    78.457437
+                ],
+                "url": "india/hyderabad/somajiguda",
+                "country": "IN"
+            }
+        },
+        {
+            "uid": 9144,
+            "aqi": "-",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2023-12-28 09:00:00",
+                "vtime": 1703734200
+            },
+            "station": {
+                "name": "IDA Pashamylaram, Hyderabad, India",
+                "geo": [
+                    17.5316895,
+                    78.218939
+                ],
+                "url": "india/hyderabad/ida-pashamylaram"
+            }
+        },
+        {
+            "uid": 11284,
+            "aqi": "80",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "Central University, Hyderabad, India",
+                "geo": [
+                    17.460103,
+                    78.334361
+                ],
+                "url": "india/hyderabad/central-university"
+            }
+        },
+        {
+            "uid": 11305,
+            "aqi": "100",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "ICRISAT Patancheru, Hyderabad, India",
+                "geo": [
+                    17.5184,
+                    78.278777
+                ],
+                "url": "india/hyderabad/icrisat-patancheru"
+            }
+        },
+        {
+            "uid": 11295,
+            "aqi": "116",
+            "time": {
+                "tz": "+05:30",
+                "stime": "2024-04-16 14:00:00",
+                "vtime": 1713256200
+            },
+            "station": {
+                "name": "Bollaram Industrial Area, Hyderabad, India",
+                "geo": [
+                    17.540891,
+                    78.358528
+                ],
+                "url": "india/hyderabad/bollaram-industrial-area"
+            }
+        }
+    ]
+}

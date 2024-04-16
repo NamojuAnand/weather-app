@@ -1,0 +1,206 @@
+{
+    "status": "ok",
+    "data": {
+        "aqi": 13,
+        "idx": 3901,
+        "attributions": [
+            {
+                "url": "http://www.arb.ca.gov/",
+                "name": "CARB - California Air Resources Board",
+                "logo": "USA-CAARB.png"
+            },
+            {
+                "url": "http://www.airnow.gov/",
+                "name": "Air Now - US EPA"
+            },
+            {
+                "url": "https://waqi.info/",
+                "name": "World Air Quality Index Project"
+            }
+        ],
+        "city": {
+            "geo": [
+                37.48293,
+                -122.20348
+            ],
+            "name": "Redwood City, San Mateo, California",
+            "url": "https://aqicn.org/city/california/san-mateo/redwood-city",
+            "location": ""
+        },
+        "dominentpol": "pm25",
+        "iaqi": {
+            "co": {
+                "v": 5.6
+            },
+            "h": {
+                "v": 93.6
+            },
+            "no2": {
+                "v": 12.6
+            },
+            "o3": {
+                "v": 4
+            },
+            "p": {
+                "v": 1023.7
+            },
+            "pm25": {
+                "v": 13
+            },
+            "t": {
+                "v": 6.3
+            },
+            "w": {
+                "v": 0.3
+            },
+            "wg": {
+                "v": 0.2
+            }
+        },
+        "time": {
+            "s": "2024-04-16 04:00:00",
+            "tz": "-07:00",
+            "v": 1713240000,
+            "iso": "2024-04-16T04:00:00-07:00"
+        },
+        "forecast": {
+            "daily": {
+                "o3": [
+                    {
+                        "avg": 15,
+                        "day": "2024-04-14",
+                        "max": 21,
+                        "min": 11
+                    },
+                    {
+                        "avg": 13,
+                        "day": "2024-04-15",
+                        "max": 20,
+                        "min": 10
+                    },
+                    {
+                        "avg": 8,
+                        "day": "2024-04-16",
+                        "max": 29,
+                        "min": 5
+                    },
+                    {
+                        "avg": 6,
+                        "day": "2024-04-17",
+                        "max": 40,
+                        "min": 2
+                    },
+                    {
+                        "avg": 8,
+                        "day": "2024-04-18",
+                        "max": 35,
+                        "min": 2
+                    },
+                    {
+                        "avg": 13,
+                        "day": "2024-04-19",
+                        "max": 25,
+                        "min": 10
+                    },
+                    {
+                        "avg": 15,
+                        "day": "2024-04-20",
+                        "max": 24,
+                        "min": 13
+                    }
+                ],
+                "pm10": [
+                    {
+                        "avg": 3,
+                        "day": "2024-04-14",
+                        "max": 4,
+                        "min": 1
+                    },
+                    {
+                        "avg": 6,
+                        "day": "2024-04-15",
+                        "max": 9,
+                        "min": 3
+                    },
+                    {
+                        "avg": 12,
+                        "day": "2024-04-16",
+                        "max": 22,
+                        "min": 7
+                    },
+                    {
+                        "avg": 16,
+                        "day": "2024-04-17",
+                        "max": 48,
+                        "min": 8
+                    },
+                    {
+                        "avg": 17,
+                        "day": "2024-04-18",
+                        "max": 45,
+                        "min": 10
+                    },
+                    {
+                        "avg": 20,
+                        "day": "2024-04-19",
+                        "max": 22,
+                        "min": 14
+                    },
+                    {
+                        "avg": 16,
+                        "day": "2024-04-20",
+                        "max": 21,
+                        "min": 9
+                    }
+                ],
+                "pm25": [
+                    {
+                        "avg": 7,
+                        "day": "2024-04-14",
+                        "max": 10,
+                        "min": 3
+                    },
+                    {
+                        "avg": 13,
+                        "day": "2024-04-15",
+                        "max": 24,
+                        "min": 7
+                    },
+                    {
+                        "avg": 29,
+                        "day": "2024-04-16",
+                        "max": 61,
+                        "min": 14
+                    },
+                    {
+                        "avg": 39,
+                        "day": "2024-04-17",
+                        "max": 124,
+                        "min": 17
+                    },
+                    {
+                        "avg": 41,
+                        "day": "2024-04-18",
+                        "max": 117,
+                        "min": 23
+                    },
+                    {
+                        "avg": 44,
+                        "day": "2024-04-19",
+                        "max": 50,
+                        "min": 31
+                    },
+                    {
+                        "avg": 34,
+                        "day": "2024-04-20",
+                        "max": 47,
+                        "min": 23
+                    }
+                ]
+            }
+        },
+        "debug": {
+            "sync": "2024-04-16T23:22:42+09:00"
+        }
+    }
+}
