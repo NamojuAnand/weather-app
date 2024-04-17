@@ -12,7 +12,6 @@ import {
     Text,
     Alert,
     ScrollView,
-    PermissionsAndroid,
     ActivityIndicator,
     TouchableOpacity,
     TextInput,
@@ -41,30 +40,14 @@ const HomeScreen = () => {
     }, []);
 
     const requestPermission = async () => {
-        try {
-            PermissionsAndroid.check(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then((checkResponse) => {
-                if (!checkResponse) {
-                    PermissionsAndroid.request(PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION).then((grantResponse) => {
-                        if (grantResponse === 'granted') {
-                            Geolocation.getCurrentPosition((info: any) => {
-                                fetchAQIData(info);
-                            })
-                        } else {
-                            setAccessDenied(true);
-                            setLoading(false);
-                        }
-                    })
-                } else {
-                    Geolocation.getCurrentPosition((info: any) => {
-                        fetchAQIData(info);
-                    })
-                }
-            })
-        }
-        catch (err) {
-            setLoading(false);
+        Geolocation.requestAuthorization(() => {
+            Geolocation.getCurrentPosition((info: any) => {
+                fetchAQIData(info);
+            });
+        }, (err) => {
             setAccessDenied(true);
-        }
+            setLoading(false);
+        })
     };
 
     const fetchAQIData = async (position: any) => {
